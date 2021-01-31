@@ -58,4 +58,22 @@ writing real scripts/services.
 Once you launch with `docker-compose up` you can login in to the Python service
 container using:
 
-    $>
+```
+# list out the running containers
+$> docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS          PORTS                    NAMES
+02d2b8fce3af   python:3-buster   "sh -c 'pip install …"   44 seconds ago   Up 43 seconds   0.0.0.0:9000->9000/tcp   blog-docker-dev-environment-example_py-dev_1
+
+# connect to this running container
+$> docker exec -it 02d2b8fce3af /bin/bash
+
+# now within the container I'm running as root and in the ~/py1 directory
+# which is the directory containing the flask app
+root@02d2b8fce3af:~/py1# whoami
+root
+
+# now if I go to ~/py-dev it contains the working directory with my scripts
+root@02d2b8fce3af:~# cd ~/py-dev/
+root@02d2b8fce3af:~/py-dev# ls
+scripts 
+```
