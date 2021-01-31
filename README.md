@@ -23,7 +23,7 @@ _The blog link :_
 To run the example:
 
 - `git clone https://github.com/briandoconnor/blog-docker-dev-environment-example.git`
-- `docker-compose up`
+- `docker-compose up` or `docker-compose up -d` if you want to avoid console output
 
 Details about each service and how to run them is present in the individual services directories.
 
@@ -39,4 +39,23 @@ working directory is mounted and shared across the docker containers when run.
 
 I have a basic script located in `working/scripts/basic_python_script/process.py`
 that shows how to use argparse and json, items that I routinely need to use in
-simple scripts. 
+simple scripts.
+
+## Python Version
+
+See the [official python images](https://hub.docker.com/_/python) on DockerHub
+as well as the [releases of Debian](https://wiki.debian.org/DebianReleases).  I'm
+using Debian Buster and Python 3 as the basis for the Python environment that gets
+launched:
+
+    python:3-buster
+
+It's probably a good idea to use a specific version number of Python when
+writing real scripts/services.
+
+## Connecting to Python Dev Environments
+
+Once you launch with `docker-compose up` you can login in to the Python service
+container using:
+
+    $>
