@@ -2,7 +2,7 @@ version: "3"
 
 services:
   py-dev:
-    image: python:3-buster
+    build: ./services/py1
     command: sh -c "pip install -r requirements.txt && python -m server"
     environment:
       - PORT=9000
