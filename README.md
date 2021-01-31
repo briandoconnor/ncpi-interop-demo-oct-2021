@@ -75,5 +75,12 @@ root
 # now if I go to ~/py-dev it contains the working directory with my scripts
 root@02d2b8fce3af:~# cd ~/py-dev/
 root@02d2b8fce3af:~/py-dev# ls
-scripts 
+scripts
+
+# a shortcut to connecting
+$> docker exec -it `docker ps | grep blog-docker-dev-environment-example_py-dev | awk '{print $1}'` /bin/bash
 ```
+
+## Python Server
+
+The flask server is running on `http://localhost:9000` and just returns "Hello from py1"
