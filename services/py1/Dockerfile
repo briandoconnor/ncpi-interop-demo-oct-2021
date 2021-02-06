@@ -5,4 +5,4 @@ FROM python:3-buster
 
 # install various things
 RUN apt-get update && apt-get install -y \
-  vim 
+  vim less
