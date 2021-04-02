@@ -1,12 +1,10 @@
-# Docker Local Development Environments
+# NCPI Interop Demo
 
 ## About
 
-I wanted to create a simple development environment that I could fork to quickly  
-get started on a Python (or another) project.  By using Docker Compose it allowed me to create
-multi-container applications using different technologies and stitch them together.
-For script development it gives me the ability to create a container with all the software I need
-and I can create a new environment for different scripts if needed.
+This is a simple development environment used for a demo showing interop between
+AnVIL, BioData Catalyst, and GMKF for the NIH Cloud Platforms Interoperability
+effort.  
 
 ## Origin
 
@@ -22,8 +20,9 @@ _The blog link :_
 
 To run the example:
 
-- `git clone https://github.com/briandoconnor/blog-docker-dev-environment-example.git`
+- `git clone https://github.com/briandoconnor/ncpi-interop-demo.git`
 - `docker-compose up` or `docker-compose up -d` if you want to avoid console output
+- or `docker-compose up --build` if you want to force rebuilding of the Docker image
 
 Details about each service and how to run them is present in the individual services directories.
 
