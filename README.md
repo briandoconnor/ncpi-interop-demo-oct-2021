@@ -72,6 +72,14 @@ not sure how long the token is good for but it seems to work for at least
 
 ### Get the File IDs
 
+Now that you have your
+
+## Docker Image
+
+## WDL
+
+## Terra Workspace
+
 
 
 ## Python Version
