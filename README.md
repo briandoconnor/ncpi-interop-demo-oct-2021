@@ -6,6 +6,13 @@ This is a simple development environment used for a demo showing interop between
 AnVIL, BioData Catalyst, and GMKF for the NIH Cloud Platforms Interoperability
 effort.  
 
+The main feature is a python script that 
+takes a Gen3 token from GMKF and a file UUID and then retrieves
+the file from a signed URL from the AWS cloud.
+
+This python script can be wrapped in a WDL and used to pull in GMKF
+data into a Terra workspace for an analysis demo as part of the NCPI effort.
+
 ## Origin
 
 This project is inspired by, and forked from, this blog post:
