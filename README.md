@@ -129,7 +129,7 @@ I created a simple WDL in `working/scripts/python_downloading_script/download.wd
 
 You can see the image below for how I configured it in the workspace below.
 
-[config](images/config.png)
+![config](images/config.png)
 
 
 ## Terra Workspace
