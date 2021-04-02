@@ -72,7 +72,49 @@ not sure how long the token is good for but it seems to work for at least
 
 ### Get the File IDs
 
-Now that you have your
+Now that you have your token, the next step is to use the
+[file repository](https://portal.kidsfirstdrc.org/search/file)
+to find data of interest and then download a manifest.
+
+Select what you want and then click "File Manifest" to download
+a manifest that includes the File UUIDs that you'll need to use
+with the downloader tool.
+
+Here's an example manifest:
+
+```
+File ID	Latest DID	File Name	Data Type	File Format	Experiment Strategy	Participants ID	Proband	Family Id	Sample External ID	Aliquot External ID
+GF_49ZVHR6H	53d7bfde-86b2-4bd9-ba4c-27c1733e3180	34be3f7d-eda9-40cf-8325-0d14cf0fbd4d.strelka.PASS.vep.vcf.gz	Annotated Somatic Mutations	vcf	WGS, WGS	PT_AW8WV14Y	Yes	--	7316-179, 7316-179	390634, 1030630
+```
+
+What you need is the `Latest DID` here for use with the download script.
+
+### Downloading Data
+
+Now that you have your token and one or more File UUIDs, you can then use
+the download script.  Connect to the running Docker container using then connect
+script and change dir to the script dir.  Then set your token as a shell
+variable, and, finally, call the downloader:
+
+```
+$> ./connect.sh
+
+root@02d2b8fce3af:~# cd /root/py-dev/scripts/python_downloading_script
+
+root@9e01a5ba0b34:~/py-dev/scripts/python_downloading_script# export token=eyJhbGciO...
+
+root@9e01a5ba0b34:~/py-dev/scripts/python_downloading_script# python download.py --token $token --fileid 53d7bfde-86b2-4bd9-ba4c-27c1733e3180 --outputdir temp
+getting access token
+getting signed URL
+getting filename from DRS server
+
+root@9e01a5ba0b34:~/py-dev/scripts/python_downloading_script# ls -lth temp/
+total 840K
+-rw-r--r-- 1 root root 839K Apr  2 22:41 34be3f7d-eda9-40cf-8325-0d14cf0fbd4d.strelka.PASS.vep.vcf.gz
+
+```
+
+You can see the vcf file downloaded to the `temp` directory.
 
 ## Docker Image
 
