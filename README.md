@@ -118,11 +118,48 @@ You can see the vcf file downloaded to the `temp` directory.
 
 ## Docker Image
 
+I build the Python image on [quay.io](https://quay.io/repository/briandoconnor/ncpi-interop-demo?tab=settings)
+under `briandoconnor/ncpi-interop-demo:latest`.  You can get it with:
+
+    docker pull quay.io/briandoconnor/ncpi-interop-demo:latest
+
 ## WDL
+
+I created a simple WDL in `working/scripts/python_downloading_script/download.wdl`
+
+You can see the image below for how I configured it in the workspace below.
+
+[config](images/config.png)
+
 
 ## Terra Workspace
 
+I created a private workspace to try out this process, see
+[20200918 NCPI Interoperability Demo](https://app.terra.bio/#workspaces/broad-firecloud-dsde/20200918%20NCPI%20Interoperability%20Demo).
+You need to be added to the workspace to access it, look for the `gmkf_file`
+table under the data tab.
 
+If you want to transform the manifest from the GMKF portal and load it into your
+own workspace this is what you need to make the above manifest look like:
+
+```
+entity:gmkf_file_id	file_uuid	file_drs_uri	file_name	data_type	file_format	experiment_strategy	participants_id	proband	family_id	sample_external_id	aliquot_external_id
+GF_49ZVHR6H	53d7bfde-86b2-4bd9-ba4c-27c1733e3180	drs://dg.F82A1A:53d7bfde-86b2-4bd9-ba4c-27c1733e3180	34be3f7d-eda9-40cf-8325-0d14cf0fbd4d.strelka.PASS.vep.vcf.gz	Annotated Somatic Mutations	vcf	WGS, WGS	PT_AW8WV14Y	Yes	--	7316-179, 7316-179	390634, 1030630
+
+```
+
+You can get the DRS prefix using information in [this](https://docs.google.com/document/d/1Wf4enSGOEXD5_AE-uzLoYqjIp5MnePbZ6kYTVFp1WoM/edit#heading=h.qiwlmit3m9) document.
+
+You can then use the upload "+" icon in the data tab of Terra to upload and
+create this table.  Notice I included a DRS URI... Terra doesn't understand
+this right now but in the future it will.
+
+## The Future
+
+In the future we expect Terra to provide the ability to account link
+with GMKF and to understand how to resolve DRS URIs pointing to data
+in GMKF.  When this happens, we expect users will migrate off of running
+this download tool to manually setup and download files from GMFK.
 
 ## Python Version
 
