@@ -9,7 +9,7 @@ input {
 }
 
 command {
-  python /root/python/scripts/python_downloading_script/download.py --token ${token} --fileid ${fileid} --outputdir .
+  python /usr/local/bin/download.py --token ${token} --fileid ${fileid} --outputdir .
 }
 
 output {
