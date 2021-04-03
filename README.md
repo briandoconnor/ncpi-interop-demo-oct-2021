@@ -42,14 +42,14 @@ Once you have the Docker running, you can connect using:
 # connect from your computer terminal
 $> ./connect.sh
 
-# now if I go to ~/py-dev it contains the working directory with my script
-root@02d2b8fce3af:~# cd /root/py-dev/scripts/python_downloading_script
+# now go to the working directory with my script
+root@02d2b8fce3af:~# cd python/scripts/python_downloading_script/
 
 ```
 
 ## Python Download Script Usage
 
-I have a basic script located in `working/scripts/python_downloading_script/download.py`
+I have a basic script located in `cd python/scripts/python_downloading_script/download.py`
 that does the download.  Here's an example of how to run it.
 
 ### Get Your GMKF Token
@@ -99,16 +99,16 @@ variable, and, finally, call the downloader:
 ```
 $> ./connect.sh
 
-root@02d2b8fce3af:~# cd /root/py-dev/scripts/python_downloading_script
+root@02d2b8fce3af:~# cd python/scripts/python_downloading_script/
 
-root@9e01a5ba0b34:~/py-dev/scripts/python_downloading_script# export token=eyJhbGciO...
+root@9e01a5ba0b34:~/python/scripts/python_downloading_script# export token=eyJhbGciO...
 
-root@9e01a5ba0b34:~/py-dev/scripts/python_downloading_script# python download.py --token $token --fileid 53d7bfde-86b2-4bd9-ba4c-27c1733e3180 --outputdir temp
+root@9e01a5ba0b34:~/python/scripts/python_downloading_script# python download.py --token $token --fileid 53d7bfde-86b2-4bd9-ba4c-27c1733e3180 --outputdir temp
 getting access token
 getting signed URL
 getting filename from DRS server
 
-root@9e01a5ba0b34:~/py-dev/scripts/python_downloading_script# ls -lth temp/
+root@9e01a5ba0b34:~/python/scripts/python_downloading_script# ls -lth temp/
 total 840K
 -rw-r--r-- 1 root root 839K Apr  2 22:41 34be3f7d-eda9-40cf-8325-0d14cf0fbd4d.strelka.PASS.vep.vcf.gz
 
@@ -125,7 +125,7 @@ under `briandoconnor/ncpi-interop-demo:latest`.  You can get it with:
 
 ## WDL
 
-I created a simple WDL in `working/scripts/python_downloading_script/download.wdl`
+I created a simple WDL in `python/scripts/python_downloading_script/download.wdl`
 
 You can see the image below for how I configured it in the workspace below.
 

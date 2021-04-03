@@ -17,7 +17,7 @@ output {
 }
 
 runtime {
- docker: "quay.io/briandoconnor/ncpi-interop-demo:latest"
+ docker: "quay.io/briandoconnor/ncpi-interop-demo:1.0"
  cpu: 1
  memory: "512 MB"
  disks: "local-disk 375 SSD"
