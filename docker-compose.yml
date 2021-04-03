@@ -3,7 +3,7 @@ version: "3"
 services:
   py-dev:
     build: ./services/py1
-    command: sh -c "cd /root/py1 && pip install -r requirements.txt && python -m server"
+    command: sh -c "cd /root/python && pip install -r requirements.txt && python -m server"
     environment:
       - PORT=9000
       - FLASK_ENV=development
@@ -11,5 +11,4 @@ services:
       - "9000:9000"
     working_dir: /root/
     volumes:
-      - ./services/py1:/root/py1:cached # <--- This will map ./py1 to /root/py1 inside the container.
-      - ./working:/root/py-dev
+      - ./services/py1:/root/python:cached # <--- This will map ./py1 to /root/py1 inside the container.
