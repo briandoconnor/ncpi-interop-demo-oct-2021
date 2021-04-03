@@ -10,8 +10,10 @@ The main feature is a python script (download.py) that
 takes a Gen3 token and a file UUID from the GMKF portal and then retrieves
 the file from a signed URL from the AWS cloud.
 
-This python script can be wrapped in a WDL and used to pull in GMKF
+This python script is also wrapped in a WDL and can be used to pull in GMKF
 data into a Terra workspace for an analysis demo as part of the NCPI effort.
+
+See below for my shared workspace where I've tested the WDL version of the downloader.
 
 ## Origins
 
@@ -153,6 +155,8 @@ You can get the DRS prefix using information in [this](https://docs.google.com/d
 You can then use the upload "+" icon in the data tab of Terra to upload and
 create this table.  Notice I included a DRS URI... Terra doesn't understand
 this right now but in the future it will.
+
+If you look under the workflows tab you'll then see the WDL setup and you can launch it on the gmkf_files table.
 
 ## The Future
 
