@@ -1,4 +1,4 @@
-# NCPI GMKF Manual Interop Demo
+# NCPI October 2021 Interop Demo
 
 ## About
 
