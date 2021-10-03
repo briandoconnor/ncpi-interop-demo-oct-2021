@@ -1,4 +1,4 @@
-# NCPI Interop Demo
+# NCPI GMKF Manual Interop Demo
 
 ## About
 
