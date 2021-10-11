@@ -1,0 +1,5 @@
+{
+    "coverage.fasta": "GRCh38_full_analysis_set_plus_decoy_hla.fa",
+    "coverage.cram": "HG00152.alt_bwamem_GRCh38DH.20150718.GBR.low_coverage.cram",
+    "coverage.gt_coverage": 5
+}
