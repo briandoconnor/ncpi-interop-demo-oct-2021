@@ -1,33 +1,67 @@
 # NCPI October 2021 Interop Demo
 
-## About
+## Background
 
-This is a simple development environment used for a demo showing interop between
-AnVIL, BioData Catalyst, and GMKF for the NIH Cloud Platforms Interoperability
-effort.  
+The [NCPI](https://anvilproject.org/ncpi) effort was created in October of 2019
+to facilitate interoperability among the genomic analysis platforms established by
+the NCI, NHGRI, NHLBI, the NIH Common Fund, and NCBI.  It is a collaboration between NIH representatives, platform team members, and researchers running cross-platform research efforts to inform and validate the interoperability approaches.
 
-The main feature is a python script (download.py) that
-takes a Gen3 token and a file UUID from the GMKF portal and then retrieves
-the file from a signed URL from the AWS cloud.
+From a researchers' standpoint the 5 groups are making it easier to work across
+datasets and projects in the Terra and Seven Bridges cloud analysis platforms.
+Because of NCPI and the interoperability it has promoted, researchers can use
+a Terra or SBG environment of their choice to access *all* NCPI data.
 
-This python script is also wrapped in a WDL and can be used to pull in GMKF
-data into a Terra workspace for an analysis demo as part of the NCPI effort.
+Previous to the NCPI effort, researchers had the choice of applying for dbGaP
+access for datasets and then either 1) downloading the files to their local
+institution or 2) using specific environments for specific datasets (e.g.
+Cavatica for GMKF data, Terra for AnVIL data).  This made it harder to
+ask scientific questions *across* datasets.
 
-See below for my shared workspace where I've tested the WDL version of the downloader.
+NCPI has improved interoperability between NIH systems by:
+* promoting the adoption of the NIH RAS Passport system for authN/Z, this gives a single-signon for researchers with authorization information from dbGaP
+* promoting the use of GA4GH DRS for making accessing data on the cloud seamless regardless of computational platform a researcher is using
+* promoting alignment of policies between NCPI systems to allow for researchers to work across them
 
-## Origins
+As of October 2021, the NCPI systems are linked together using RAS+DRS.  This
+means a researching working in Terra or SBG can access >11PB of 'omics data from
+AnVIL, BioData Catalyst, CRDC, and Kids First in a single workspace for the first time.
 
-This project environment is inspired by, and forked from, this blog post:
+## About this Repo
 
-**🐳 Simplified guide to using Docker for local development environment**
+This repository is essentially a tutorial showing how I was able to leverage the
+NCPI system interoperability to start the initial phases of Melissa Wilson's
+["Sex as a Biological Variable"](https://docs.google.com/document/d/1y7Mt0JFA4REp2IELlWAVwiIrq_6i7_n3tQOpoxzMeWI/edit#heading=h.1vxylonbp5xz) use case.  NCPI uses researcher use cases like
+this one to drive its work.  I did the following for this demonstration:
 
-_The blog link :_
+0. I picked a single dbGaP project from AnVIL, BDCat, CRDC, and Kids First that included both WGS data (bams and crams) and sex annotations.  I applied for access in dbGaP (for those needed).
+0. For each project, I browsed the respective portal and downloaded manifests (GMKF and CRDC) or clicked the export to Terra button directly
+0. I ran my script to convert manifests to TSV data models that Terra could understand for GMKF and CRDC, including DRS URIs
+0. I uploaded those to the same Terra workspace that I sent AnVIL and BDCat data to through the 'send to Terra' buttons
+0. I wrote a WDL workflow that does a basic QC step which is the first step in Melissa Wilson's XYAlign pipeline (coverage)
+0. I parameterized the workflow with a subset of files and ran it
 
-[https://blog.atulr.com/docker-local-environment/](https://blog.atulr.com/docker-local-environment/)
+This is simple but it shows a few key things:
+
+* I could run a workflow in Terra on data I was authorized to use from AnVIL, BDCat, CRDC, and Kids First
+* no data was duplicated and paid for by me, Terra understood how to use DRS to stream in data on demand from the same cloud/region (AnVIL, BDCat, CRDC) or over the Internet from AWS without charge.  Not needing to make copies of data to work with them save huge amounts of time and money
+* the total data available for these platforms is ~11PB, if I was authorized to access all those projects I could, in theory, use this approach to access all data from each of them
+
+My hope is others can use this basic approach to access the portion of the ~11PB
+of data that makes sense for their research and work with it easily in Terra.
 
 ## Dependencies
 
-You need Docker (along with `docker-compose`) setup and running on your computer.
+For local development (say you want to extend the scripts I used to process
+the manifest files) you need Docker (along with `docker-compose`) setup and running on your computer.
+
+If you just want to run these scripts you will also need to run these
+through docker-compose or figure out the dependencies to run outside of Docker (Python plus
+a few libraries, easy).
+
+Once you get your manifests processed to something ready for use on the cloud you need:
+* a [Terra.bio](https://app.terra.bio) account
+* connection in Terra to authorization for each system (AnVIL, BDCat, CRDC, and Kids First)
+* the workflow uploaded to Terra, see 
 
 ## Running
 
@@ -176,3 +210,14 @@ launched:
 
 It's probably a good idea to use a specific version number of Python when
 writing real scripts/services.
+
+
+## Dev Environment Origins
+
+This project dev environment is inspired by, and forked from, this blog post:
+
+**🐳 Simplified guide to using Docker for local development environment**
+
+_The blog link :_
+
+[https://blog.atulr.com/docker-local-environment/](https://blog.atulr.com/docker-local-environment/)
