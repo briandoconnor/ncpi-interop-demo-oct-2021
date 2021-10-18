@@ -61,7 +61,11 @@ a few libraries, easy).
 Once you get your manifests processed to something ready for use on the cloud you need:
 * a [Terra.bio](https://app.terra.bio) account
 * connection in Terra to authorization for each system (AnVIL, BDCat, CRDC, and Kids First)
-* the workflow uploaded to Terra, see 
+* the workflow uploaded to Terra, see the workflows directory
+
+![account linking](/images/image8.png)
+
+Make sure you account link for the AnVIL, BDCat, CRDC, and Kids First systems.
 
 ## Running
 
@@ -79,127 +83,124 @@ Once you have the Docker running, you can connect using:
 $> ./connect.sh
 
 # now go to the working directory with my script
-root@02d2b8fce3af:~# cd python/scripts/python_downloading_script/
+root@02d2b8fce3af:~# cd python/scripts/python_manifest_transform_script/
 
 ```
 
-## Python Download Script Usage
+This is an environment where you can run the script below with all dependencies
+pre-installed.
 
-I have a basic script located in `cd python/scripts/python_downloading_script/download.py`
-that does the download.  Here's an example of how to run it.
+You can copy manifests from the GMKF and CRDC portals here.
 
-### Get Your GMKF Token
+## Data & Manifests
 
-Go to the [GMKF Data Portal](https://portal.kidsfirstdrc.org/dashboard) and
-log in with whatever ID you want to use.  Then go to your profile and
-make sure you connect with the Data Repositories (typically you'll use
-your eRA Commons account to do this) and (optionally) connect to your
-Cavatica account.  
+I selected a single project form each of AnVIL, BDCat, CRDC, and GDC:
 
-![account linking](/images/account_links.png)
+### AnVIL
 
-Once you've logged in, open up the developer tools in Chrome and look for a
-`token?fence=gen3` request.  You'll need to copy the `authorization: Bearer`
-token and use this with Python script in this repo to download data. I'm
-not sure how long the token is good for but it seems to work for at least
-24 hour.  You'll need to copy all the text after "Bearer " in this image.
+I'm using GTEx V8, which has 838 subjects with WGS and sex annotations
 
-![token](/images/example_token.png)
+![image](/images/image4.png)
 
-### Get the File IDs
+This is easy to import to Terra, just use the "Export all to Terra" button.  
+No need to transform manifests using my script.
 
-Now that you have your token, the next step is to use the
-[file repository](https://portal.kidsfirstdrc.org/search/file)
-to find data of interest and then download a manifest.
+### BDCat
 
-Select what you want and then click "File Manifest" to download
-a manifest that includes the File UUIDs that you'll need to use
-with the downloader tool.
+I'm using NHLBI TOPMed: Genetics of Cardiometabolic Health in the Amish. dbGaP Study Accession: phs000956.v4.p1.c2, which has WGS w/ sex, 1,111 subjects
 
-Here's an example manifest:
+![image](/images/image1.png)
 
-```
-File ID	Latest DID	File Name	Data Type	File Format	Experiment Strategy	Participants ID	Proband	Family Id	Sample External ID	Aliquot External ID
-GF_49ZVHR6H	53d7bfde-86b2-4bd9-ba4c-27c1733e3180	34be3f7d-eda9-40cf-8325-0d14cf0fbd4d.strelka.PASS.vep.vcf.gz	Annotated Somatic Mutations	vcf	WGS, WGS	PT_AW8WV14Y	Yes	--	7316-179, 7316-179	390634, 1030630
-```
+This is easy to import to Terra, just use the "Export all to Terra" button.  
+No need to transform manifests using my script.
 
-What you need is the `Latest DID` here for use with the download script.
+### GMKF
 
-### Downloading Data
+I'm using Gabriella Miller Kids First (GMKF) Pediatric Research Program in Susceptibility to Ewing Sarcoma Based on Germline Risk and Familial History of Cancer, dbGaP Study Accession: phs001228.v1.p1. WGS w/ sex, aligned reads, 1595 subjects
 
-Now that you have your token and one or more File UUIDs, you can then use
-the download script.  Connect to the running Docker container using then connect
-script and change dir to the script dir.  Then set your token as a shell
-variable, and, finally, call the downloader:
+You need to download the manifest, biospecimen, and clinical files (convert excel to TSV).
 
-```
-$> ./connect.sh
+![image](/images/image2.png)
 
-root@02d2b8fce3af:~# cd python/scripts/python_downloading_script/
+### GDC
 
-root@9e01a5ba0b34:~/python/scripts/python_downloading_script# export token=eyJhbGciO...
+I'm using the National Cancer Institute’s Clinical Proteomic Tumor Analysis Consortium (CPTAC), WGS w/ sex, 779 subjects.
 
-root@9e01a5ba0b34:~/python/scripts/python_downloading_script# python download.py --token $token --fileid 53d7bfde-86b2-4bd9-ba4c-27c1733e3180 --outputdir temp
-getting access token
-getting signed URL
-getting filename from DRS server
+You need to download the manifest, biospecimen, and clinical files (convert excel to TSV).
 
-root@9e01a5ba0b34:~/python/scripts/python_downloading_script# ls -lth temp/
-total 840K
--rw-r--r-- 1 root root 839K Apr  2 22:41 34be3f7d-eda9-40cf-8325-0d14cf0fbd4d.strelka.PASS.vep.vcf.gz
+![image](/images/image7.png)
 
-```
 
-You can see the vcf file downloaded to the `temp` directory.
+## Python Manifest Transform Script Usage
 
-## Docker Image
+I have a basic script located in `cd python/scripts/python_manifest_transform_script/process_manifest.py`
+that transforms a manifest from the GMKF and CRDC portals into something
+you can upload to Terra.  
 
-I build the Python image on [quay.io](https://quay.io/repository/briandoconnor/ncpi-interop-demo?tab=settings)
-under `briandoconnor/ncpi-interop-demo:latest`.  You can get it with:
+The magic ingredient here is knowing how to turn file IDs from these two
+platforms into DRS URIs that Terra understands.
 
-    docker pull quay.io/briandoconnor/ncpi-interop-demo:latest
+Here are examples of calling the script on manifests (+other data) from GMKF and CRDC (GDC) portals:
 
-## WDL
+### GDC
 
-I created a simple WDL in `python/scripts/python_downloading_script/download.wdl`
+    python process_manifest.py --gdc gdc/gdc_manifest.2021-09-28.txt --clinical gdc/clinical.tsv --aliquot gdc/aliquot.tsv > gdc_workspace.tsv
+
+You can find links to the manifest, clinical, and aliquot files on the search results page in GDC (repository tab).
+
+### GMKF
+
+    python process_manifest.py --gmkf gmkf/kidsfirst-participant-family-manifest_2021-09-30.tsv  --clinical gmkf/clinical.tsv > gmkf_workspace.tsv
+
+You can then upload the gmkf_workspace.tsv and gdc_workspace.tsv files to your Terra workspace.
+
+## Uploading TSVs to Terra
+
+You can see what this process looks like in a video I posed to YouTube [here](https://www.youtube.com/watch?v=Gr0C1KYOZi8)
+
+## Uploading the Workflow to Terra
+
+I created a simple WDL in `workflows/myWorkflow.wdl`
+
+You can add this to your Terra workspace under the workflows tab.  Just use
+the "Find a Workflow" button, click Broad Methods Repository, and this will
+let you upload the WDL as a workflow on Terra that you can then export to this
+workspace.
+
+![image](/images/image10.png)
 
 You can see the image below for how I configured it in the workspace below.
 
-![config](images/config.png)
+![image](/images/image11.png)
+
+## Running the Workflow in Terra
+
+Now that you have your workspace created, populated with pointers to data
+from AnVIL, BDCat, CRDC, and GMKF, and the coverage workflow has been uploaded
+you can now run the workflow by selecting data.  In this figure I'm selecting a single
+CRAM to process from GMKF.  You can do something similar and then run
+the workflow.  Keep in mind, I've only tested with CRAMs currently.
+
+![image](/images/image11.png)
 
 
 ## Terra Workspace
 
 I created a private workspace to try out this process, see
-[20200918 NCPI Interoperability Demo](https://app.terra.bio/#workspaces/broad-firecloud-dsde/20200918%20NCPI%20Interoperability%20Demo).
-You need to be added to the workspace to access it, look for the `gmkf_file`
-table under the data tab.
+[20211005 NCPI Interoperability Demo](https://app.terra.bio/#workspaces/broad-firecloud-dsde/20211005%20NCPI%20Interoperability%20Demo).
+You need to be added to the workspace to access it, I will be handing this
+off to the user ed team shortly to make a public workspace that anyone can access.
 
-If you want to transform the manifest from the GMKF portal and load it into your
-own workspace this is what you need to make the above manifest look like:
 
-```
-entity:gmkf_file_id	file_uuid	file_drs_uri	file_name	data_type	file_format	experiment_strategy	participants_id	proband	family_id	sample_external_id	aliquot_external_id
-GF_49ZVHR6H	53d7bfde-86b2-4bd9-ba4c-27c1733e3180	drs://dg.F82A1A:53d7bfde-86b2-4bd9-ba4c-27c1733e3180	34be3f7d-eda9-40cf-8325-0d14cf0fbd4d.strelka.PASS.vep.vcf.gz	Annotated Somatic Mutations	vcf	WGS, WGS	PT_AW8WV14Y	Yes	--	7316-179, 7316-179	390634, 1030630
+## More Info
 
-```
+### The Future
 
-You can get the DRS prefix using information in [this](https://docs.google.com/document/d/1Wf4enSGOEXD5_AE-uzLoYqjIp5MnePbZ6kYTVFp1WoM/edit#heading=h.qiwlmit3m9) document.
+In the future I'm hoping the GMKF and GDC portals will include the ability
+to directly send search results to Terra to avoid the hassle of having
+to create TSV file uploads from the manifests.
 
-You can then use the upload "+" icon in the data tab of Terra to upload and
-create this table.  Notice I included a DRS URI... Terra doesn't understand
-this right now but in the future it will.
-
-If you look under the workflows tab you'll then see the WDL setup and you can launch it on the gmkf_files table.
-
-## The Future
-
-In the future we expect Terra to provide the ability to account link
-with GMKF and to understand how to resolve DRS URIs pointing to data
-in GMKF.  When this happens, we expect users will migrate off of running
-this download tool to manually setup and download files from GMFK.
-
-## Python Version
+### Python Version
 
 See the [official python images](https://hub.docker.com/_/python) on DockerHub
 as well as the [releases of Debian](https://wiki.debian.org/DebianReleases).  I'm
@@ -212,7 +213,7 @@ It's probably a good idea to use a specific version number of Python when
 writing real scripts/services.
 
 
-## Dev Environment Origins
+### Dev Environment Origins
 
 This project dev environment is inspired by, and forked from, this blog post:
 
