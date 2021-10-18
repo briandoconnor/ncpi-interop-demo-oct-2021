@@ -203,6 +203,11 @@ In the future I'm hoping the GMKF and GDC portals will include the ability
 to directly send search results to Terra to avoid the hassle of having
 to create TSV file uploads from the manifests.
 
+I'm also hoping to flesh out this tutorial more completely since I realize
+it presumes a lot of knowledge about NCPI and Terra.  I hope this work can
+also be picked up by both the Terra User Ed team
+and the User Outreach team of NCPI for broader distribution.
+
 ### Python Version
 
 See the [official python images](https://hub.docker.com/_/python) on DockerHub
