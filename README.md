@@ -140,6 +140,9 @@ you can upload to Terra.
 The magic ingredient here is knowing how to turn file IDs from these two
 platforms into DRS URIs that Terra understands.
 
+If you want more information on the DRS servers used in the project, their
+prefixes, and hostnames, see this [document](https://docs.google.com/document/d/1Wf4enSGOEXD5_AE-uzLoYqjIp5MnePbZ6kYTVFp1WoM/edit#).
+
 Here are examples of calling the script on manifests (+other data) from GMKF and CRDC (GDC) portals:
 
 ### GDC
