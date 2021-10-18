@@ -33,6 +33,7 @@ task indexTask {
 
     input {
       File cram
+      String localCram = sub(basename(cram), ":", "_")
     }
 
     runtime {
@@ -42,11 +43,13 @@ task indexTask {
       disks: "local-disk 300 SSD"
     }
     command <<<
-        samtools index ~{cram} && mv ~{cram}.crai ./
+        set -e -o pipefail
+        cp ~{cram} ~{basename(cram)}
+        samtools index ~{basename(cram)} ~{basename(cram)}.crai
     >>>
 
     output {
-      File crai = "~{cram}.crai"
+      File crai = glob('*.crai')[0]
     }
 
 }
@@ -66,8 +69,9 @@ task coverageTask {
       disks: "local-disk 300 SSD"
     }
     command <<<
-        mv ~{crai} ~{cram}.crai && \
-        mosdepth -n --fast-mode -t 4 --by 1000 sample -f ~{fasta} ~{cram} && \
+        cp ~{crai} ~{basename(cram)}.crai && \
+        cp ~{cram} ~{basename(cram)} && \
+        mosdepth -n --fast-mode -t 4 --by 1000 sample -f ~{fasta} ~{basename(cram)} && \
         cat sample.mosdepth.global.dist.txt | grep chrX$'\t'~{gt_coverage}$'\t'  | awk '{print $3}' > chrX.txt && \
         cat sample.mosdepth.global.dist.txt | grep  chrY$'\t'~{gt_coverage}$'\t'  | awk '{print $3}' > chrY.txt && \
         cat sample.mosdepth.global.dist.txt | grep  chr19$'\t'~{gt_coverage}$'\t'  | awk '{print $3}' > chr19.txt
