@@ -184,7 +184,7 @@ you can now run the workflow by selecting data.  In this figure I'm selecting a 
 CRAM to process from GMKF.  You can do something similar and then run
 the workflow.  Keep in mind, I've only tested with CRAMs currently.
 
-![image](/images/image11.png)
+![image](/images/image12.png)
 
 
 ## Terra Workspace
