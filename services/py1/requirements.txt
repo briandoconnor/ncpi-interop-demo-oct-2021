@@ -3,3 +3,6 @@ requests
 httpx
 tenacity
 uuid
+pypfb[gen3]
+flatten_json
+pandas
